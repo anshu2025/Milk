@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Milk Management</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="icon" href="icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#4CAF50">
+</head>
+
+<body>
+
+<div class="home-card">
+
+<button onclick="toggleLang()" class="btn">🌐 Hindi / English</button><br>
+
+<h1>🥛 Milk Management</h1>
+
+<button onclick="location.href='milkman.html'" class="btn">
+Milkman Panel
+</button>
+
+<button onclick="location.href='customer.html'" class="btn">
+Customer Panel
+</button>
+
+</div>
+
+<script>
+let lang = localStorage.getItem("lang") || "en";
+
+function toggleLang(){
+    lang = (lang === "en") ? "hi" : "en";
+    localStorage.setItem("lang", lang);
+
+    if(lang === "en"){
+        location.reload(); // 👈 important
+    } else {
+        applyLang();
+    }
+}
+function applyLang(){
+
+    let buttons = document.querySelectorAll(".btn");
+
+    if(lang === "hi"){
+
+        document.querySelector("h1").innerText = "🥛 दूध प्रबंधन";
+
+        buttons[1].innerText = "दूधवाला पैनल";
+        buttons[2].innerText = "ग्राहक पैनल";
+
+    } else {
+
+        document.querySelector("h1").innerText = "🥛 Milk Management";
+
+        buttons[1].innerText = "Milkman Panel";
+        buttons[2].innerText = "Customer Panel";
+
+    }
+}
+
+window.onload = applyLang;
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js");
+}
+</script>
+
+</body>
+</html>

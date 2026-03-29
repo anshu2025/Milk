@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Customer Panel</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="icon.png">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<button onclick="toggleLang()" class="btn">🌐 Hindi / English</button>
+
+<button onclick="location.href='index.html'" class="back">
+⬅ Back
+</button>
+
+<h2>Customer Record</h2>
+
+<input id="milkmanName" placeholder="Milkman Name">
+
+<button id="saveBtn" onclick="saveMilkman()" class="btn">Save Name</button>
+
+<div id="milkmanDisplay"></div>
+
+<input type="date" id="date">
+
+<select id="milk">
+<option value="1">1 L</option>
+<option value="0.5">0.5 L</option>
+</select>
+
+<button onclick="addRecord()" class="btn">
+Add Record
+</button>
+
+<div id="record"></div>
+<div id="total"></div>
+
+</div>
+
+<script src="customer.js"></script>
+
+<script>
+let lang = localStorage.getItem("lang") || "en";
+
+function toggleLang(){
+    lang = (lang === "en") ? "hi" : "en";
+    localStorage.setItem("lang", lang);
+
+    if(lang === "en"){
+        location.reload(); // 👈 important
+    } else {
+        applyLang();
+    }
+}
+
+function applyLang(){
+
+    if(lang === "hi"){
+
+        document.querySelector("h2").innerText = "ग्राहक रिकॉर्ड";
+
+        document.getElementById("milkmanName").placeholder = "दूधवाले का नाम";
+
+        let btns = document.querySelectorAll(".btn");
+
+        btns.forEach(b=>{
+            if(b.innerText.includes("Save Name")) b.innerText="नाम सेव करें";
+            if(b.innerText.includes("Add Record")) b.innerText="रिकॉर्ड जोड़ें";
+        });
+
+    }
+}
+window.onload = function () {
+    applyLang();
+
+    let savedName = localStorage.getItem("milkmanName");
+    if (savedName) {
+        showMilkman(savedName);
+    }
+};
+</script>
+
+</body>
+</html>
