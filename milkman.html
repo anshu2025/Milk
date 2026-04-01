@@ -3,87 +3,47 @@
 <head>
 <title>Milkman Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-body{
-margin:0;
-font-family:Arial;
-
-background: url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6") no-repeat center 40% fixed;
-
-background-size: cover;
-}
-.container{padding:15px;backdrop-filter: blur(12px);border-radius:12px;max-width:600px;margin:30px auto;color:#333; background: rgba(238, 235, 235, 0.8);box-shadow:0 8px 20px rgba(0,0,0,0.3);}
-h2,h3{margin:8px 0;color:#333;}
-.btn{padding:10px 16px;margin:5px 0;border:none;border-radius:8px;cursor:pointer;font-size:14px;color:#fff;background:#4CAF50;transition:.3s;}
-.btn:hover{background:#45a049;}
-.btn.red{background:#ff4d4d;}
-.btn.red:hover{background:#cc0000;}
-.main-layout{display:flex;gap:15px;margin-top:15px;}
-.left-panel,.center-panel{border-radius:12px;padding:15px;background:#fcf8f8;box-shadow:0 4px 10px rgba(0,0,0,0.1);}
-.left-panel{width:35%;}.center-panel{width:65%;}
-#customerList .customer-card{background:#f8f5f5;padding:10px 12px;margin:6px 0;border-radius:8px;box-shadow:0 2px 5px rgba(0,0,0,0.1);}
-.customer-card div p{margin:2px 0;font-size:13px;color:#121023;}
-.cust-actions{margin-top:5px;text-align:right;}
-.cust-actions button{margin-left:5px;padding:5px 8px;font-size:12px;border:none;border-radius:6px;cursor:pointer;color:#fff;transition:.3s;}
-.cust-actions button:nth-child(1){background:#ff4d4d;} 
-.cust-actions button:nth-child(1):hover{background:#cc0000;}
-.cust-actions button:nth-child(2){background:#4CAF50;}
-.cust-actions button:nth-child(2):hover{background:#45a049;}
-.center-panel select,.center-panel input[type="date"]{width:calc(100% - 24px);padding:10px 12px;margin:6px 0;border:1px solid #ccc;border-radius:8px;font-size:14px;outline:none;transition:.3s;}
-.center-panel select:focus,.center-panel input[type="date"]:focus{border-color:#4CAF50;box-shadow:0 0 5px rgba(76,175,80,0.5);}
-table{width:100%;border-collapse:collapse;margin-top:12px;border-radius:8px;overflow:hidden;}
-th,td{border:1px solid #7e2020;padding:10px;text-align:center;}
-th{background:#3392a5;color:#120be0;font-weight:600;}
-.deleteBtn{background:#ff4d4d;color:#fff;border:none;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:13px;transition:.3s;}
-.deleteBtn:hover{background:#cc0000;}
-.popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:9999;justify-content:center;align-items:center;}
-.popup-box{background:#fff;padding:25px 30px;width:300px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,0.3);text-align:center;animation:popupAppear .3s ease;}
-@keyframes popupAppear{0%{transform:scale(0.7);opacity:0;}100%{transform:scale(1);opacity:1;}}
-.popup-box input{width:90%;padding:10px 12px;margin:12px 0;border-radius:8px;border:1px solid #ccc;font-size:14px;}
-.popup-box .btn{width:45%;margin:6px 5px 0 5px;}
-@media(max-width:768px){.main-layout{flex-direction:column;}.left-panel,.center-panel{width:100%;}}
-.back{
-
-width:100px;
-padding:12px;
-margin:10px 10px 10px 10px;
-background:#4CAF50;
-color:white;
-border:none;
-border-radius:6px;
-font-size:16px;
-cursor:pointer;
-
-}
-</style>
+<link rel="stylesheet" href="style.css">
 <link rel="icon" href="icon.png">
 </head>
-<body>
+<body class="milkman-bg">
 
-<button onclick="location.href='index.html'" class="back">
-⬅ Back
-</button>
-<button onclick="toggleLang()" class="btn">🌐 Hindi / English</button>
+<!-- TOP BAR -->
+<div class="top-bar">
+<button onclick="location.href='index.html'" class="back">⬅ Back</button>
+<button onclick="toggleLang()" class="lang">🌐 Hindi / English</button>
+</div>
+
 <div class="container">
-<h2>Milkman Dashboard</h2>
-<button onclick="openPopup()" class="btn">➕ Add Customer</button>
+
+<h2 id="mm_title">Milkman Dashboard</h2>
+
+<button onclick="openPopup()" class="btn" id="mm_addBtn">➕ Add Customer</button>
 
 <div class="main-layout">
 
-<!-- LEFT: Customer List -->
+<!-- LEFT -->
 <div class="left-panel">
-    <div class="customer-header">👥 Customers</div>
+    <div class="customer-header" id="mm_heading">👥 Customers</div>
     <div id="customerList"></div>
 </div>
 
-<!-- CENTER: Milk Entry & Records -->
+<!-- CENTER -->
 <div class="center-panel">
-    <h3>Milk Entry</h3>
+  <h2 id="mm_title">Milkman Dashboard</h2>
+
     <select id="customerSelect"></select>
+
     <input type="date" id="date">
-    <select id="milk"><option value="1">1 L</option><option value="0.5">0.5 L</option></select>
-    <button onclick="addMilk()" class="btn">Add Milk</button>
-    <button onclick="skipDay()" class="btn red">Skip Day</button>
+
+    <select id="milk">
+        <option value="1">1 L</option>
+        <option value="0.5">0.5 L</option>
+    </select>
+
+    <button onclick="addMilk()" class="btn" id="mm_addMilkBtn">Add Milk</button>
+    <button onclick="skipDay()" class="btn red" id="mm_skipBtn">Skip Day</button>
+
     <div id="record"></div>
 </div>
 
@@ -93,59 +53,17 @@ cursor:pointer;
 <!-- POPUP -->
 <div id="popup" class="popup">
 <div class="popup-box">
+
 <h3>Add Customer</h3>
+
 <input id="custName" placeholder="Customer Name">
+
 <button onclick="addCustomer()" class="btn">Add</button>
 <button onclick="closePopup()" class="btn red">Cancel</button>
+
 </div>
 </div>
 
-<script src="milkman.js"></script>
-<script>
-let lang = localStorage.getItem("lang") || "en";
-
-function toggleLang(){
-    lang = (lang === "en") ? "hi" : "en";
-    localStorage.setItem("lang", lang);
-
-    if(lang === "en"){
-        location.reload(); // 👈 important
-    } else {
-        applyLang();
-    }
-}
-
-function applyLang(){
-
-    if(lang === "hi"){
-
-        document.querySelector("h2").innerText = "दूधवाला डैशबोर्ड";
-
-        let btns = document.querySelectorAll(".btn");
-
-        btns.forEach(b=>{
-            if(b.innerText.includes("Add Customer")) b.innerText="ग्राहक जोड़ें";
-            if(b.innerText.includes("Add Milk")) b.innerText="दूध जोड़ें";
-            if(b.innerText.includes("Skip Day")) b.innerText="दिन छोड़ें";
-        });
-
-    }
-}
-
-window.onload = function(){
-
-    applyLang();
-
-    // 👇 YE IMPORTANT HAI
-    if(typeof loadCustomers === "function"){
-        loadCustomers();
-    }
-
-    if(typeof showRecord === "function"){
-        showRecord();
-    }
-
-}
-</script>
+<script src="app.js"></script>
 </body>
 </html>

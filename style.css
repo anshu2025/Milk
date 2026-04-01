@@ -1,111 +1,214 @@
+/* ================= GLOBAL ================= */
 body{
 margin:0;
 font-family:Arial;
+}
 
+/* BACKGROUNDS */
+body.milkman-bg{
 background: url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6") no-repeat center 40% fixed;
-
 background-size: cover;
 }
 
-/* cards ko glass look */
+body.customer-bg{
+background: url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6") no-repeat center 40% fixed;
+background-size: cover;
+}
+
+body.home-bg{
+background: url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6") no-repeat center 40% fixed;
+background-size: cover;
+}
+
+/* ================= GLASS EFFECT ================= */
 .container, .home-card{
 background: rgba(255,255,255,0.15);
 backdrop-filter: blur(12px);
 border-radius: 12px;
 box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-color: rgb(30, 30, 37);
+color: #1e1e25;
 }
+
+/* ================= HOME PAGE ================= */
 .home-card{
-backdrop-filter: blur(12px);
 max-width:400px;
 margin:120px auto;
 padding:30px;
-border-radius:10px;
-box-shadow:0 5px 20px rgba(0,0,0,0.1);
 text-align:center;
-
 }
 
 .container{
-
-max-width:500px;
-margin:auto;
+max-width:700px;
+margin:30px auto;
 padding:20px;
-
 }
 
-h1,h2{
+/* ================= TOP BAR ================= */
+.top-bar{
+display:flex;
+justify-content:space-between;
+max-width:600px;
+margin:15px auto 0;
+padding:0 10px;
+}
 
+.back,.lang,.back-btn{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#4CAF50;
+color:#fff;
+}
+
+/* ================= HEADINGS ================= */
+h1,h2,h3{
 text-align:center;
-
+margin:8px 0;
 }
 
-.btn,.back{
+/* ================= LAYOUT ================= */
+.main-layout{
+display:flex;
+gap:15px;
+margin-top:15px;
+}
 
-width:100%;
+/* PANELS */
+.left-panel,.center-panel{
+border-radius:12px;
+padding:15px;
+background:#fcf8f8;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.left-panel{width:35%;}
+.center-panel{width:65%;}
+
+/* ================= BUTTON ================= */
+.btn{
+width:50%;
 padding:12px;
 margin:10px 0;
-background:#4CAF50;
-color:white;
 border:none;
-border-radius:6px;
-font-size:16px;
+border-radius:8px;
 cursor:pointer;
-
+font-size:14px;
+color:white;
+background:#4CAF50;
+transition:.3s;
 }
 
+.btn:hover{background:#45a049;}
 
-.back{
-
-margin-bottom:15px;
-width: 110px;
-
+.btn.red{
+background: linear-gradient(45deg, #ff4d4d, #ff1a1a);
 }
 
+.btn.red:hover{
+background:#cc0000;
+transform:scale(1.05);
+}
+
+/* ================= INPUT ================= */
 input,select{
-
 width:100%;
 padding:10px;
 margin:6px 0;
-border:1px solid #3014d3;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+/* ================= CARDS ================= */
+.card{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.customer-card{
+background:#f8f5f5;
+padding:10px 12px;
+margin:6px 0;
+border-radius:8px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.customer-card div{
+display:block;
+}
+
+.customer-card p{
+margin:2px 0;
+font-size:13px;
+}
+/* ================= ACTION BUTTONS ================= */
+.icon-btn{
+border:none;
+padding:6px 10px;
+border-radius:6px;
+cursor:pointer;
+color:white;
+font-size:14px;
+box-shadow:0 2px 5px rgba(0,0,0,0.2);
+}
+
+.icon-delete{background:#ff4d4d;}
+.icon-view{background:#4CAF50;}
+
+.icon-btn:hover{opacity:0.8;}
+
+/* ================= CUSTOMER ACTIONS ================= */
+.cust-actions{
+text-align:right;
+}
+
+.cust-actions button{
+margin-left:5px;
+padding:5px 8px;
+border:none;
+border-radius:6px;
+color:white;
+cursor:pointer;
+}
+
+.cust-actions button:nth-child(1){background:#ff4d4d;}
+.cust-actions button:nth-child(2){background:#4CAF50;}
+
+/* ================= TABLE ================= */
+table{
+width:100%;
+margin-top:10px;
+border-collapse: collapse;
+}
+
+th{
+background:#4CAF50;
+color:white;
+}
+
+th,td{
+padding:10px;
+border:1px solid #ddd;
+text-align:center;
+}
+
+/* DELETE BUTTON */
+.deleteBtn{
+background:red;
+color:white;
+border:none;
+padding:5px 8px;
 border-radius:5px;
-
+cursor:pointer;
 }
 
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+.deleteBtn:hover{
+background:darkred;
 }
 
-th, td {
-    border: 1px solid #bd1f1f;
-    padding: 8px;
-    text-align: center;
-}
-
-th {
-    background: #2fd3ad;
-    color: rgb(27, 9, 230);
-}
-
-.deleteBtn {
-    background: red;
-    color: white;
-    border: none;
-    padding: 5px 8px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.deleteBtn:hover {
-    background: darkred;
-}
-
-
+/* ================= POPUP ================= */
 .popup{
-
 display:none;
 position:fixed;
 top:0;
@@ -113,98 +216,49 @@ left:0;
 width:100%;
 height:100%;
 background:rgba(0,0,0,0.5);
-
+justify-content:center;
+align-items:center;
+z-index:9999;
 }
 
 .popup-box{
-
 background:white;
 padding:20px;
 max-width:300px;
-margin:200px auto;
-border-radius:8px;
+border-radius:10px;
 text-align:center;
-
-}
-/* TOP BAR */
-
-.topbar{
-
-display:flex;
-align-items:center;
-gap:15px;
-margin-bottom:15px;
-
 }
 
-.back-btn{
-
-background:#333;
-color:white;
-border:none;
-padding:8px 14px;
-border-radius:6px;
-cursor:pointer;
-
-}
-
-/* CUSTOMER DROPDOWN */
-
+/* ================= DROPDOWN SECTION ================= */
 .customer-section{
-
 margin-top:20px;
-
 }
 
 .customer-header{
-
 background:#4CAF50;
 color:white;
-padding:12px;
-border-radius:6px;
-cursor:pointer;
+padding:10px;
+border-radius:8px;
+margin-bottom:10px;
 font-weight:bold;
-
+text-align:center;
 }
 
 .customer-list{
-
 display:none;
 background:white;
 border:1px solid #ddd;
 border-radius:6px;
 margin-top:5px;
 padding:10px;
-
 }
 
-/* CUSTOMER CARD */
-
-.card{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-background:#f9f9f9;
-padding:10px;
-border-radius:6px;
-margin-bottom:8px;
-
+/* ================= MOBILE ================= */
+@media(max-width:768px){
+.main-layout{
+flex-direction:column;
 }
-.deleteBtn ,.red {
-    background: linear-gradient(45deg, #ff4d4d, #ff1a1a);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    color: white;
-    border: none;
-    padding: 8px 14px;
-    margin-top: 8px;
-    border-radius: 6px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: 0.3s;
+.left-panel,.center-panel{
+width:100%;
 }
-
-.deleteBtn:hover,.red:hover {
-    background-color: #cc0000;
-    transform: scale(1.05);
 }
