@@ -19,11 +19,11 @@ function applyLang(){
     // CUSTOMER PANEL
     if(document.getElementById("milkmanList")){
         if(lang === "hi"){
-            setText("title","ग्राहक पैनल");
+            setText("title","ग्राहक कार्यक्षेत्र");
             setText("milkmanHeading","🥛 दूधवाला");
-            setText("entryTitle","दूध एंट्री");
+            setText("entryTitle","दूध हिसाब");
             setText("addMilkmanBtn","➕ दूधवाला जोड़ें");
-            setText("addRecordBtn","रिकॉर्ड जोड़ें");
+            setText("addRecordBtn","दूध जोड़ें");
             setText("skipBtn","दिन छोड़ें");
             setText("popupTitle","दूधवाला जोड़ें");
         } else {
@@ -38,13 +38,30 @@ function applyLang(){
     }
 
     // MILKMAN PANEL
-    if(document.getElementById("customerList")){
-        if(lang === "hi"){
-            document.querySelector("h2").innerText = "दूधवाला डैशबोर्ड";
-        } else {
-            document.querySelector("h2").innerText = "Milkman Dashboard";
-        }
+   if(document.getElementById("customerList")){
+
+    if(lang === "hi"){
+
+        setText("mm_title", "दूधवाला डैशबोर्ड");
+        setText("mm_heading", "👥 ग्राहक");
+        setText("mm_addBtn", "➕ ग्राहक जोड़ें");
+        setText("mm_entryTitle", "दूध हिसाब");
+        setText("mm_addMilkBtn", "दूध जोड़ें");
+        setText("mm_skipBtn", "दिन छोड़ें");
+        setText("popupTitle", "ग्राहक जोड़ें");
+
+    } else {
+
+        setText("mm_title", "Milkman Dashboard");
+        setText("mm_heading", "👥 Customers");
+        setText("mm_addBtn", "➕ Add Customer");
+        setText("mm_entryTitle", "Milk Entry");
+        setText("mm_addMilkBtn", "Add Milk");
+        setText("mm_skipBtn", "Skip Day");
+        setText("popupTitle", "Add Customer");
+
     }
+}
 }
 
 // ==========================
