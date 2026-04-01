@@ -42,7 +42,7 @@ function applyLang(){
 
     if(lang === "hi"){
 
-        setText("mm_title", "दूधवाला डैशबोर्ड");
+        setText("mm_title", "दूधविक्रेता कार्यक्षेत्र");
         setText("mm_heading", "👥 ग्राहक");
         setText("mm_addBtn", "➕ ग्राहक जोड़ें");
         setText("mm_entryTitle", "दूध हिसाब");
