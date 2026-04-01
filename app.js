@@ -1,9 +1,6 @@
-// ============================
-
 // ==========================
-// LANGUAGE SYSTEM (SAFE)
+// LANGUAGE SYSTEM
 // ==========================
-
 let lang = localStorage.getItem("lang") || "en";
 
 function toggleLang(){
@@ -12,116 +9,98 @@ function toggleLang(){
     applyLang();
 }
 
-function applyLang(){
-
-    // =========================
-    // CUSTOMER PANEL
-    // =========================
-    if(document.getElementById("milkmanList")){
-
-        if(lang === "hi"){
-            setText("title", "ग्राहक पैनल");
-            setText("milkmanHeading", "🥛 दूधवाला");
-            setText("entryTitle", "दूध एंट्री");
-            setText("addMilkmanBtn", "➕ दूधवाला जोड़ें");
-            setText("addRecordBtn", "रिकॉर्ड जोड़ें");
-            setText("skipBtn", "दिन छोड़ें");
-            setText("popupTitle", "दूधवाला जोड़ें");
-            setText("popupAddBtn", "जोड़ें");
-            setText("popupCancelBtn", "रद्द करें");
-        } else {
-            setText("title", "Customer Panel");
-            setText("milkmanHeading", "🥛 Milkmen");
-            setText("entryTitle", "Milk Entry");
-            setText("addMilkmanBtn", "➕ Add Milkman");
-            setText("addRecordBtn", "Add Record");
-            setText("skipBtn", "Skip Day");
-            setText("popupTitle", "Add Milkman");
-            setText("popupAddBtn", "Add");
-            setText("popupCancelBtn", "Cancel");
-        }
-    }
-
-    // =========================
-    // MILKMAN PANEL
-    // =========================
-    if(document.getElementById("customerList")){
-
-        if(lang === "hi"){
-            setText("mm_title", "दूधवाला डैशबोर्ड");
-            setText("mm_heading", "👥 ग्राहक");
-            setText("mm_addBtn", "➕ ग्राहक जोड़ें");
-            setText("mm_entryTitle", "दूध एंट्री");
-            setText("mm_addMilkBtn", "दूध जोड़ें");
-            setText("mm_skipBtn", "दिन छोड़ें");
-        } else {
-            setText("mm_title", "Milkman Dashboard");
-            setText("mm_heading", "👥 Customers");
-            setText("mm_addBtn", "➕ Add Customer");
-            setText("mm_entryTitle", "Milk Entry");
-            setText("mm_addMilkBtn", "Add Milk");
-            setText("mm_skipBtn", "Skip Day");
-        }
-    }
-}
-
-// ==========================
-// SAFE TEXT SETTER
-// ==========================
 function setText(id, text){
     let el = document.getElementById(id);
     if(el) el.innerText = text;
 }
 
+function applyLang(){
+
+    // CUSTOMER PANEL
+    if(document.getElementById("milkmanList")){
+        if(lang === "hi"){
+            setText("title","ग्राहक पैनल");
+            setText("milkmanHeading","🥛 दूधवाला");
+            setText("entryTitle","दूध एंट्री");
+            setText("addMilkmanBtn","➕ दूधवाला जोड़ें");
+            setText("addRecordBtn","रिकॉर्ड जोड़ें");
+            setText("skipBtn","दिन छोड़ें");
+            setText("popupTitle","दूधवाला जोड़ें");
+        } else {
+            setText("title","Customer Panel");
+            setText("milkmanHeading","🥛 Milkmen");
+            setText("entryTitle","Milk Entry");
+            setText("addMilkmanBtn","➕ Add Milkman");
+            setText("addRecordBtn","Add Record");
+            setText("skipBtn","Skip Day");
+            setText("popupTitle","Add Milkman");
+        }
+    }
+
+    // MILKMAN PANEL
+    if(document.getElementById("customerList")){
+        if(lang === "hi"){
+            document.querySelector("h2").innerText = "दूधवाला डैशबोर्ड";
+        } else {
+            document.querySelector("h2").innerText = "Milkman Dashboard";
+        }
+    }
+}
+
+// ==========================
 // SAFE GET
-// ============================
+// ==========================
 function getData(key){
     try{
-        let data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : [];
+        let d = localStorage.getItem(key);
+        return d ? JSON.parse(d) : [];
     }catch(e){
         return [];
     }
 }
 
-// ============================
-// DETECT PANEL
-// ============================
+// ==========================
+// PANEL DETECT
+// ==========================
 let isMilkman = document.getElementById("customerList");
 let isCustomer = document.getElementById("milkmanList");
 
-// ============================
+// ==========================
 // 🥛 MILKMAN PANEL
-// ============================
+// ==========================
+let mm_customers = getData("mm_customers");
+let mm_records = getData("mm_records");
 
-let customers = getData("mm_customers");
-let records = getData("mm_records");
-
-function saveMM(){
-    localStorage.setItem("mm_customers", JSON.stringify(customers));
-    localStorage.setItem("mm_records", JSON.stringify(records));
+function mm_save(){
+    localStorage.setItem("mm_customers", JSON.stringify(mm_customers));
+    localStorage.setItem("mm_records", JSON.stringify(mm_records));
 }
 
 // ADD CUSTOMER
-function addCustomer(){
-    let name = document.getElementById("custName")?.value.trim();
-    if(!name) return;
+function mm_addCustomer(){
+    let name = document.getElementById("custName").value.trim();
+    let rate = parseFloat(document.getElementById("custRate").value);
 
-    if(customers.includes(name)){
+    if(!name || isNaN(rate)){
+        alert("Enter name & rate");
+        return;
+    }
+
+    if(mm_customers.includes(name)){
         alert("Customer exists");
         return;
     }
 
-    customers.push(name);
-    saveMM();
+    mm_customers.push(name);
+    localStorage.setItem("mm_rate_"+name, rate);
 
-    document.getElementById("custName").value="";
-    loadCustomers();
+    mm_save();
+    mm_loadCustomers();
     closePopup();
 }
 
 // LOAD
-function loadCustomers(){
+function mm_loadCustomers(){
     if(!isMilkman) return;
 
     let list = document.getElementById("customerList");
@@ -130,61 +109,63 @@ function loadCustomers(){
     list.innerHTML="";
     select.innerHTML="";
 
-    customers.forEach((c,i)=>{
+    mm_customers.forEach((c,i)=>{
 
-        let data = records.filter(r=>r.customer===c);
+        let data = mm_records.filter(r=>r.customer===c);
 
-        let totalMilk = data.reduce((s,r)=>{
-            return r.milk==="Skipped"?s:s+Number(r.milk);
-        },0);
+        let totalMilk = data.reduce((s,r)=> r.milk==="Skipped"?s:s+Number(r.milk),0);
+        let rate = localStorage.getItem("mm_rate_"+c) || 50;
+        let totalMoney = totalMilk * rate;
 
-       let totalMoney = totalMilk * 50;
-
-list.innerHTML += `
-<div class="customer-card">
-    <div>
-        <strong>${c}</strong>
-        <p>Milk: ${totalMilk} L</p>
-        <p>Money: ₹${totalMoney}</p>
-    </div>
-    <div class="cust-actions">
-        <button onclick="deleteCustomer(${i})">❌</button>
-        <button onclick="selectCustomer('${c}')">📋</button>
-    </div>
-</div>`;
+        list.innerHTML += `
+        <div class="customer-card">
+            <div>
+                <strong>${c}</strong>
+                <p>Milk: ${totalMilk} L</p>
+                <p>Money: ₹${totalMoney}</p>
+            </div>
+            <div class="cust-actions">
+                <button onclick="mm_deleteCustomer(${i})">❌</button>
+                <button onclick="mm_selectCustomer('${c}')">👁️</button>
+            </div>
+        </div>`;
 
         select.innerHTML += `<option value="${c}">${c}</option>`;
     });
 
-    showRecord();
+    mm_showRecord();
 }
 
-function selectCustomer(name){
+// SELECT
+function mm_selectCustomer(name){
     document.getElementById("customerSelect").value = name;
-    showRecord();
+    mm_showRecord();
 }
 
-function deleteCustomer(i){
-    let name = customers[i];
-    customers.splice(i,1);
-    records = records.filter(r=>r.customer!==name);
-    saveMM();
-    loadCustomers();
+// DELETE
+function mm_deleteCustomer(i){
+    let name = mm_customers[i];
+    mm_customers.splice(i,1);
+    mm_records = mm_records.filter(r=>r.customer!==name);
+    mm_save();
+    mm_loadCustomers();
 }
 
 // ADD MILK
 function addMilk(){
+    if(!isMilkman) return;
+
     let customer = document.getElementById("customerSelect").value;
     let date = document.getElementById("date").value;
     let milk = document.getElementById("milk").value;
 
     if(!date) return;
 
-    records.push({customer,date,milk});
-    saveMM();
+    mm_records.push({customer,date,milk});
+    mm_save();
 
-    showRecord();
-    loadCustomers();
+    mm_showRecord();
+    mm_loadCustomers();
 }
 
 // SKIP
@@ -195,24 +176,26 @@ function skipDay(){
 
         if(!date) return;
 
-        records.push({customer,date,milk:"Skipped"});
-        saveMM();
+        mm_records.push({customer,date,milk:"Skipped"});
+        mm_save();
 
-        showRecord();
-        loadCustomers();
+        mm_showRecord();
+        mm_loadCustomers();
+    } else {
+        cm_skipDay();
     }
 }
 
 // SHOW
-function showRecord(){
+function mm_showRecord(){
     if(!isMilkman) return;
 
     let select = document.getElementById("customerSelect");
     let box = document.getElementById("record");
 
-    if(!select || !box || !select.value) return;
+    if(!select.value) return;
 
-    let data = records.filter(r=>r.customer===select.value);
+    let data = mm_records.filter(r=>r.customer===select.value);
 
     let html = `<table>
 <tr><th>Customer</th><th>Date</th><th>Quantity</th><th>Action</th></tr>`;
@@ -222,74 +205,66 @@ function showRecord(){
 <td>${r.customer}</td>
 <td>${r.date}</td>
 <td>${r.milk==="Skipped"?"Skipped":r.milk+" L"}</td>
-<td><button class="deleteBtn" onclick="deleteRecord(${i})">❌</button></td>
+<td><button class="deleteBtn" onclick="mm_deleteRecord(${i})">❌</button></td>
 </tr>`;
     });
 
-    html += "</table>";
+    let totalMilk = data.reduce((s,r)=> r.milk==="Skipped"?s:s+Number(r.milk),0);
+    let rate = localStorage.getItem("mm_rate_"+select.value) || 50;
+    let totalMoney = totalMilk * rate;
+
+    html += `<tr>
+<td colspan="4"><b>Total Milk:</b> ${totalMilk} L | <b>Total Money:</b> ₹${totalMoney}</td>
+</tr></table>`;
+
     box.innerHTML = html;
-
-    let totalMilk = data.reduce((s,r)=>{
-    return r.milk==="Skipped" ? s : s + Number(r.milk);
-},0);
-
-let totalMoney = totalMilk * 50;
-
-html += `
-<tr>
-<td colspan="4">
-<b>Total Milk:</b> ${totalMilk} L |
-<b>Total Money:</b> ₹${totalMoney}
-</td>
-</tr>`;
 }
 
-function deleteRecord(i){
-    let select = document.getElementById("customerSelect").value;
-    let data = records.filter(r=>r.customer===select);
+// DELETE RECORD
+function mm_deleteRecord(i){
+    let customer = document.getElementById("customerSelect").value;
+    let data = mm_records.filter(r=>r.customer===customer);
     let rec = data[i];
 
-    let idx = records.indexOf(rec);
+    let idx = mm_records.indexOf(rec);
     if(idx>-1){
-        records.splice(idx,1);
-        saveMM();
-        showRecord();
-        loadCustomers();
+        mm_records.splice(idx,1);
+        mm_save();
+        mm_showRecord();
+        mm_loadCustomers();
     }
 }
 
-// ============================
+// ==========================
 // 🧑‍🌾 CUSTOMER PANEL
-// ============================
+// ==========================
+let cm_milkmen = getData("cm_milkmen");
+let cm_records = getData("cm_records");
 
-let milkmen = getData("cm_milkmen");
-let custRecords = getData("cm_records");
-
-function saveCM(){
-    localStorage.setItem("cm_milkmen", JSON.stringify(milkmen));
-    localStorage.setItem("cm_records", JSON.stringify(custRecords));
+function cm_save(){
+    localStorage.setItem("cm_milkmen", JSON.stringify(cm_milkmen));
+    localStorage.setItem("cm_records", JSON.stringify(cm_records));
 }
 
 // ADD MILKMAN
 function addMilkman(){
-    let name = document.getElementById("milkmanName")?.value.trim();
-    let rate = parseFloat(document.getElementById("milkmanRate")?.value);
+    let name = document.getElementById("milkmanName").value.trim();
+    let rate = parseFloat(document.getElementById("milkmanRate").value);
 
-    if(!name) return;
+    if(!name || isNaN(rate)){
+        alert("Enter name & rate");
+        return;
+    }
 
-    if(milkmen.includes(name)){
+    if(cm_milkmen.includes(name)){
         alert("Milkman exists");
         return;
     }
 
-    milkmen.push(name);
-    localStorage.setItem("cm_rate_"+name, rate||50);
+    cm_milkmen.push(name);
+    localStorage.setItem("cm_rate_"+name, rate);
 
-    saveCM();
-
-    document.getElementById("milkmanName").value="";
-    document.getElementById("milkmanRate").value="";
-
+    cm_save();
     loadMilkmen();
     closePopup();
 }
@@ -304,29 +279,26 @@ function loadMilkmen(){
     list.innerHTML="";
     select.innerHTML="";
 
-    milkmen.forEach((m,i)=>{
+    cm_milkmen.forEach((m,i)=>{
 
-        let data = custRecords.filter(r=>r.milkman===m);
+        let data = cm_records.filter(r=>r.milkman===m);
 
-        let totalMilk = data.reduce((s,r)=>{
-            return r.milk==="Skipped"?s:s+Number(r.milk);
-        },0);
+        let totalMilk = data.reduce((s,r)=> r.milk==="Skipped"?s:s+Number(r.milk),0);
+        let rate = localStorage.getItem("cm_rate_"+m) || 50;
+        let totalMoney = totalMilk * rate;
 
-    let rate = localStorage.getItem("cm_rate_"+m) || 50;
-let totalMoney = totalMilk * rate;
-
-list.innerHTML += `
-<div class="customer-card">
-    <div>
-        <strong>${m}</strong>
-        <p>Milk: ${totalMilk} L</p>
-        <p>Money: ₹${totalMoney}</p>
-    </div>
-    <div class="cust-actions">
-        <button onclick="deleteMilkman(${i})">❌</button>
-        <button onclick="selectMilkman('${m}')">📋</button>
-    </div>
-</div>`;
+        list.innerHTML += `
+        <div class="customer-card">
+            <div>
+                <strong>${m}</strong>
+                <p>Milk: ${totalMilk} L</p>
+                <p>Money: ₹${totalMoney}</p>
+            </div>
+            <div class="cust-actions">
+                <button onclick="deleteMilkman(${i})">❌</button>
+                <button onclick="selectMilkman('${m}')">👁️</button>
+            </div>
+        </div>`;
 
         select.innerHTML += `<option value="${m}">${m}</option>`;
     });
@@ -334,16 +306,18 @@ list.innerHTML += `
     showRecords();
 }
 
+// SELECT
 function selectMilkman(name){
     document.getElementById("milkmanSelect").value = name;
     showRecords();
 }
 
+// DELETE
 function deleteMilkman(i){
-    let name = milkmen[i];
-    milkmen.splice(i,1);
-    custRecords = custRecords.filter(r=>r.milkman!==name);
-    saveCM();
+    let name = cm_milkmen[i];
+    cm_milkmen.splice(i,1);
+    cm_records = cm_records.filter(r=>r.milkman!==name);
+    cm_save();
     loadMilkmen();
 }
 
@@ -355,22 +329,22 @@ function addRecord(){
 
     if(!date) return;
 
-    custRecords.push({milkman,date,milk});
-    saveCM();
+    cm_records.push({milkman,date,milk});
+    cm_save();
 
     showRecords();
     loadMilkmen();
 }
 
 // SKIP
-function skipDayCustomer(){
+function cm_skipDay(){
     let milkman = document.getElementById("milkmanSelect").value;
     let date = document.getElementById("date").value;
 
     if(!date) return;
 
-    custRecords.push({milkman,date,milk:"Skipped"});
-    saveCM();
+    cm_records.push({milkman,date,milk:"Skipped"});
+    cm_save();
 
     showRecords();
     loadMilkmen();
@@ -383,9 +357,9 @@ function showRecords(){
     let select = document.getElementById("milkmanSelect");
     let box = document.getElementById("records");
 
-    if(!select || !box || !select.value) return;
+    if(!select.value) return;
 
-    let data = custRecords.filter(r=>r.milkman===select.value);
+    let data = cm_records.filter(r=>r.milkman===select.value);
 
     let html = `<table>
 <tr><th>Milkman</th><th>Date</th><th>Quantity</th><th>Action</th></tr>`;
@@ -399,42 +373,35 @@ function showRecords(){
 </tr>`;
     });
 
-    html += "</table>";
+    let totalMilk = data.reduce((s,r)=> r.milk==="Skipped"?s:s+Number(r.milk),0);
+    let rate = localStorage.getItem("cm_rate_"+select.value) || 50;
+    let totalMoney = totalMilk * rate;
+
+    html += `<tr>
+<td colspan="4"><b>Total Milk:</b> ${totalMilk} L | <b>Total Money:</b> ₹${totalMoney}</td>
+</tr></table>`;
+
     box.innerHTML = html;
-
-    let totalMilk = data.reduce((s,r)=>{
-    return r.milk==="Skipped" ? s : s + Number(r.milk);
-},0);
-
-let rate = localStorage.getItem("cm_rate_"+select.value) || 50;
-let totalMoney = totalMilk * rate;
-
-html += `
-<tr>
-<td colspan="4">
-<b>Total Milk:</b> ${totalMilk} L |
-<b>Total Money:</b> ₹${totalMoney}
-</td>
-</tr>`;
 }
 
+// DELETE RECORD
 function deleteRecordCustomer(i){
-    let select = document.getElementById("milkmanSelect").value;
-    let data = custRecords.filter(r=>r.milkman===select);
+    let milkman = document.getElementById("milkmanSelect").value;
+    let data = cm_records.filter(r=>r.milkman===milkman);
     let rec = data[i];
 
-    let idx = custRecords.indexOf(rec);
+    let idx = cm_records.indexOf(rec);
     if(idx>-1){
-        custRecords.splice(idx,1);
-        saveCM();
+        cm_records.splice(idx,1);
+        cm_save();
         showRecords();
         loadMilkmen();
     }
 }
 
-// ============================
-// COMMON POPUP
-// ============================
+// ==========================
+// POPUP
+// ==========================
 function openPopup(){
     document.getElementById("popup").style.display="flex";
 }
@@ -443,16 +410,13 @@ function closePopup(){
     document.getElementById("popup").style.display="none";
 }
 
-// ============================
+// ==========================
 // INIT
-// ============================
+// ==========================
 window.onload = function(){
 
-    if(isMilkman){
-        loadCustomers();
-    }
+    if(isMilkman) mm_loadCustomers();
+    if(isCustomer) loadMilkmen();
 
-    if(isCustomer){
-        loadMilkmen();
-    }
+    applyLang();
 };

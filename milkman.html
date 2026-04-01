@@ -30,7 +30,8 @@
 
 <!-- CENTER -->
 <div class="center-panel">
-  <h2 id="mm_title">Milkman Dashboard</h2>
+
+    <h3 id="mm_entryTitle">Milk Entry</h3>
 
     <select id="customerSelect"></select>
 
@@ -54,11 +55,12 @@
 <div id="popup" class="popup">
 <div class="popup-box">
 
-<h3>Add Customer</h3>
+<h3 id="popupTitle">Add Customer</h3>
 
 <input id="custName" placeholder="Customer Name">
+<input id="custRate" type="number" placeholder="Rate per liter (₹)">
 
-<button onclick="addCustomer()" class="btn">Add</button>
+<button onclick="mm_addCustomer()" class="btn">Add</button>
 <button onclick="closePopup()" class="btn red">Cancel</button>
 
 </div>
