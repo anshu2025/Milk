@@ -437,3 +437,11 @@ window.onload = function(){
 
     applyLang();
 };
+let select = document.getElementById("milk");
+
+for(let i = 0.5; i <= 50; i += 0.5){
+    let option = document.createElement("option");
+    option.value = i;
+    option.text = i + " L";
+    select.appendChild(option);
+}
